@@ -1,0 +1,76 @@
+task: clf
+cuda_id: 0
+seed: 42
+
+wandb_dir: /home/liup/repo/PseMix
+wandb_prj: PseMix-BRCA
+save_path: ./result/psemix-brca/abmil
+save_prediction: True
+eval_training_loader_per_epoch: True
+
+# data loading
+path_patch: /NAS02/ExpData/tcga_brca/feat-x20-RN50-B-color_norm/pt_files
+path_coord: /NAS02/ExpData/tcga_brca/hier-x20-tiles-s256/patches
+path_table: ./data_split/tcga_brca/TCGA_BRCA_path_full_subtype.csv
+feat_format: pt
+data_split_path: ./data_split/tcga_brca/TCGA_BRCA-fold{}.npz
+data_split_seed: [0, 1, 2, 3]
+data_sampling_ratio: null
+data_corrupt_label: null # default null.
+
+# network architecture
+net_dims: 1024-256-2 # 1024-256-2 / 768-256-2 / 384-384/128-2
+backbone: ABMIL # ABMIL, DSMIL, TransMIL
+use_feat_proj: True
+init_wt: True
+drop_rate: 0.0
+
+# pseudo-bag settings
+pseb_dividing: proto # proto by default, proto / kmeans / random
+pseb_gene_once: True
+pseb_n: 30 # default 30
+pseb_l: 8 # default 8
+pseb_proto: mean # mean / max, default using mean prototype
+pseb_iter_tuning: 8 # default 8, int, 0 / 1 / 2 / ...
+pseb_pheno_cut: uniform # uniform / quantile, default uniform
+pseb_mixup_prob: 0.4 # the parameter p
+
+# mixup 
+mixup_type: psebmix # psebmix, insmix or none, indicating the mixup of pseudo-bags or instances, or NO mixup 
+mixup_alpha: 1.0 # the alpha parameter of beta distribution
+mixup_lam_from: content # area / content, default content.
+
+# training loss
+# if active mixup is active (mixup_type != none), then use BCE or SoftTargetCrossEntropy
+loss_bce: True # if true, use BCE with optional bce_target_thresh and optional smoothing
+loss_bce_target_thresh: null # use this thresh to convert the soft label into to hard 0 / 1.
+loss_smoothing: 0 # if 0, not using label smoothing;otherwise, using BCE or CE with label smoothing
+
+# optimizer
+opt_name: adam
+opt_lr: 0.0002
+opt_weight_decay: 0.00001
+
+#training
+epochs: 100 # 
+batch_size: 1
+bp_every_batch: 16
+num_workers: 4
+es_patience: 20
+es_warmup: 5
+es_verbose: True
+es_start_epoch: 0
+monitor_metrics: loss # loss/auc
+
+# LR Scheduler
+lrs_factor: 0.5
+lrs_patience: 10
+
+# In a test mode
+test: False
+test_wandb_prj: PseMix-mask-test # wandb project name of test mode
+test_path: test # dataset name you want to test, which should be a key in the npz file for data split
+test_load_path: ./result/brca/best-model-data_split_seed_{} # path to load trained models
+test_save_path: ./result-robust/mask_test/psemix-best/brca-mask_ratio_{}-data_split_seed_{} # path to save test results
+test_mask_ratio: 0.8 # mask ratio 
+test_in_between: False
