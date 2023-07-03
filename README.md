@@ -1,3 +1,5 @@
 # PseMix
 
-PseMix: Mixup gigapixel WSIs with pseudo-bags for WSI Analysis
+Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification.
+
+A detailed document on PseMix usage will be released soon.
