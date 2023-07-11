@@ -44,15 +44,12 @@ for (X, y) in loader: # load a minibatch
 
         # target-level mixing
         new_y.append(mix_ratio * y[i] + (1 - mix_ratio) * y[new_idxs[i]]) 
-        
-        # NOTE:
-        # Following Mixup implementation(https://github.com/facebookresearch/mixup-cifar10), 
-        # we actually use weighted loss for target mixing.
-        # Details could be found at https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407
 
     # 3. minibatch training
     minibatch_training(new_X, new_y)
 ```
+
+NOTE that we actually use a weighted loss for target mixing, following [Mixup implementation](https://github.com/facebookresearch/mixup-cifar10). Details could be found at [the weighted loss](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407).
 
 Our implementation roughly follows the pseudo-codes above. Details could be found by:
 
@@ -62,8 +59,12 @@ Our implementation roughly follows the pseudo-codes above. Details could be foun
 
 ## Training with PseMix
 
-| Model                                                                  | Wandb training curves                                  |       More |
-|------------------------------------------------------------------------|--------------------------------------------------|---------------------|
-| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                |![](docs/wandb-abmil-train.png)           |    N/A  |
-| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         | ![](docs/wandb-dsmil-train.png)|  N/A   |
-| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     |![](docs/wandb-transmil-train.png)          | N/A  |
+Training curves (training and test AUC, exported from wandb) are as follows. Solid lines indicate training with PseMix, and dashed ones are those vanilla models without PseMix.   
+
+| Model                                                                  | Wandb training curves                                  |
+|------------------------------------------------------------------------|--------------------------------------------------------|
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                |![](docs/wandb-abmil-train.png)          |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         | ![](docs/wandb-dsmil-train.png)   |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     |![](docs/wandb-transmil-train.png)        |
+
+Any issues are welcomed. 
