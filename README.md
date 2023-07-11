@@ -62,4 +62,8 @@ Our implementation roughly follows the pseudo-codes above. Details could be foun
 
 ## Training with PseMix
 
-Our training details, e.g., wandb files and logs, will be made public soon.
+| Model                                                                  | Wandb training curves                                  |       More |
+|------------------------------------------------------------------------|--------------------------------------------------|---------------------|
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                |![](docs/wandb-abmil-train.png)           |    N/A  |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         | ![](docs/wandb-dsmil-train.png)|  N/A   |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     |![](docs/wandb-transmil-train.png)          | N/A  |
