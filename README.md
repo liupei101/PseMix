@@ -1,10 +1,17 @@
 # PseMix
 
-Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification. [Preprint](https://arxiv.org/abs/2306.16180)
+[[arXiv preprint](https://arxiv.org/abs/2306.16180)] Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification. 
 
-## Implementations
+## Key features
 
-For simplicity, we show our pseudo-codes of PseMix as follows:
+Applying PseMix (as a data augmentation method) to multiple instance learning networks, e.g., ABMIL, DSMIL, and TransMIL, could 
+- **improve network performance** with minimal extra computational costs, without any complicated techniques
+- help the network obtain **better generalization and robustness** (against patch occlusion and noisy label learning)
+
+
+## Applying PseMix into your training pipeline
+
+Minimal code example (pseudo-code):
 ```python
 # generate_pseudo_bags: function for dividing WSI bags into pseudo-bags
 # ALPHA: the hyper-parameter of Beta distribution
@@ -13,19 +20,16 @@ For simplicity, we show our pseudo-codes of PseMix as follows:
 for (X, y) in loader: # load a minibatch 
     n_batch = X.shape[0] # with `n_batch` WSI bags (samples)
 
-    # divide each bag into `N` pseudo-bags
+    # 1. dividing each bag into `N` pseudo-bags
     X = generate_pseudo_bags(X)
 
-    # index for the mixing of each bag pair
     new_idxs = torch.randperm(n_batch)
-
-    # pseudo-bag-level Mixup
-    # 1. draw a mixing scale from Beta distribution
+    # draw a mixing scale from Beta distribution
     lam = numpy.random.beta(ALPHA, ALPHA) 
     lam = min(lam, 1.0 - 1e-5) # avoid numerical overflow when transforming it into discrete ones
     lam_discrete = int(lam * (N + 1)) # transform into discrete values
 
-    # 2. pseudo-bag mixing
+    # 2. pseudo-bag-level Mixup generates samples (new_X, new_y)
     new_X, new_y = [], []
     for i in range(n_batch):
     	# randomly select pseudo-bags according to `lam_discrete`
@@ -51,11 +55,16 @@ for (X, y) in loader: # load a minibatch
 
 NOTE that we actually use a weighted loss for target mixing, following [Mixup implementation](https://github.com/facebookresearch/mixup-cifar10). Details could be found at [the weighted loss](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407).
 
-Our implementation roughly follows the pseudo-codes above. Details could be found by:
+Our implementation roughly follows the pseudo-codes above. More details could be found by the following codes:
 
-- **Pseudo-bag dividing**: https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13
-- **Pseudo-bag-level Mixup**: https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10
-- **Training with mixed labels**:  https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381
+- (generate_pseudo_bags)[https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13].
+- (pseudo-bag-level Mixup)[https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10].
+- (training with mixed labels)[https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381].
+
+
+## Performance
+
+
 
 ## Training with PseMix
 
@@ -67,4 +76,16 @@ Training curves (training and test AUC, exported from wandb) are as follows. Sol
 | [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         | ![](docs/wandb-dsmil-train.png)   |
 | [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     |![](docs/wandb-transmil-train.png)        |
 
-Any issues are welcomed. 
+## Citation
+
+If you find our code helpful for your research, please using the following bibtex to cite this paper:
+```txt
+@misc{liu2023pseudobag,
+      title={Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification}, 
+      author={Pei Liu and Luping Ji and Xinyu Zhang and Feng Ye},
+      year={2023},
+      eprint={2306.16180},
+      archivePrefix={arXiv},
+      primaryClass={cs.CV}
+}
+```
