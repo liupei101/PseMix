@@ -57,9 +57,9 @@ NOTE that we actually use a weighted loss for target mixing, following [Mixup im
 
 Our implementation roughly follows the pseudo-codes above. More details could be found by the following codes:
 
-- (generate_pseudo_bags)[https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13].
-- (pseudo-bag-level Mixup)[https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10].
-- (training with mixed labels)[https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381].
+- [generate_pseudo_bags](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13).
+- [pseudo-bag-level Mixup](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10).
+- [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
 
 
 ## Performance
