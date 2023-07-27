@@ -62,16 +62,16 @@ Our implementation roughly follows the pseudo-codes above. More details could be
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
 
 
-## Performance
+## AUC performance
 
 | Network | BRCA | NSCLC | RCC | Average                                  |
 |---------|------|-------|-----|------------------------------------------|
 | ABMIL   | 87.05 | 92.23 | 97.36 | 92.21 |
-| ABMIL w/ PseMix   | 89.49 | 93.01 | 98.02 | 93.51 |
+| ABMIL **w/ PseMix**   | 89.49 | 93.01 | 98.02 | 93.51 |
 | DSMIL   | 87.73 | 92.99 | 97.65 | 92.79 |
-| DSMIL w/ PseMix   | 89.65 | 93.92 | 97.89 | 93.82 |
+| DSMIL **w/ PseMix**   | 89.65 | 93.92 | 97.89 | 93.82 |
 | TransMIL   | 88.83 | 92.14 | 97.88 | 92.95 |
-| TransMIL w/ PseMix   | 90.40 | 93.47 | 97.76 | 93.88 |
+| TransMIL **w/ PseMix**   | 90.40 | 93.47 | 97.76 | 93.88 |
 
 ## Training with PseMix
 
