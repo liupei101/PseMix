@@ -5,11 +5,11 @@
 ## Key features
 
 Applying PseMix (as a data augmentation method) to multiple instance learning networks, e.g., ABMIL, DSMIL, and TransMIL, could 
-- **improve network performance** with minimal extra computational costs, without any complicated techniques
+- **improve network performance** with minimal extra computational costs, without introducing any complicated techniques
 - help the network obtain **better generalization and robustness** (against patch occlusion and noisy label learning)
 
 
-## Applying PseMix into your training pipeline
+## Applying PseMix to your training pipeline
 
 Minimal code example (pseudo-code):
 ```python
@@ -64,11 +64,18 @@ Our implementation roughly follows the pseudo-codes above. More details could be
 
 ## Performance
 
-
+| Network | BRCA | NSCLC | RCC | Average                                  |
+|---------|------|-------|-----|------------------------------------------|
+| ABMIL   | 87.05 | 92.23 | 97.36 | 92.21 |
+| ABMIL w/ PseMix   | 89.49 | 93.01 | 98.02 | 93.51 |
+| DSMIL   | 87.73 | 92.99 | 97.65 | 92.79 |
+| DSMIL w/ PseMix   | 89.65 | 93.92 | 97.89 | 93.82 |
+| TransMIL   | 88.83 | 92.14 | 97.88 | 92.95 |
+| TransMIL w/ PseMix   | 90.40 | 93.47 | 97.76 | 93.88 |
 
 ## Training with PseMix
 
-Training curves (training and test AUC, exported from wandb) are as follows. Solid lines indicate training with PseMix, and dashed ones are those vanilla models without PseMix.   
+Training curves (training and test AUC, exported from wandb) are listed as follows. Solid lines indicate training with PseMix, and dashed ones are those vanilla models without PseMix.   
 
 | Model                                                                  | Wandb training curves                                  |
 |------------------------------------------------------------------------|--------------------------------------------------------|
