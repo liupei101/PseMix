@@ -6,7 +6,7 @@ wandb_dir: /home/liup/repo/PseMix
 wandb_prj: PseMix-BRCA
 save_path: ./result/psemix-brca/abmil
 save_prediction: True
-eval_training_loader_per_epoch: True
+eval_training_loader_per_epoch: False
 
 # data loading
 path_patch: /NAS02/ExpData/tcga_brca/feat-x20-RN50-B-color_norm/pt_files

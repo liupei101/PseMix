@@ -62,6 +62,33 @@ Our implementation roughly follows the pseudo-codes above. More details could be
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
 
 
+## Running the code
+
+Using the following command to load running configurations from a yaml file and train the model:
+```bash
+python3 main.py --config config/cfg_clf_mix.yml --handler clf --multi_run
+```
+
+The configurations that we need to pay attention are as follows:
+- dataset related (we process WSIs with [CLAM](https://github.com/mahmoodlab/CLAM))
+  - `path_patch`: the directory path to patch files. 
+  - `path_table`: the file path of a csv table that contains WSI IDs and their label information.
+  - `data_split_path`: the file path of a npz file that stores data splitting information. 
+- network related
+  - `net_dims`: the setting of embedding dimension, e.g., `1024-256-2`.
+  - `backbone`: network backbone, one of `ABMIL`, `DSMIL`, and `TransMIL`.
+- pseudo-bag dividing related
+  - `pseb_dividing`: the method used to divide instances, one of `proto`, `kmeans`, and `random`.
+  - `pseb_n`: the number of pseudo-bags for each WSI bag, 30 by default.
+  - `pseb_l`: the number of phenotypes, 8 by default.
+  - `pseb_iter_tuning`: the number of fine-tuning iterations, 8 by default.
+  - `pseb_mixup_prob`: the probability of random-mixing.
+- Mixup related
+  - `mixup_type`: the method of Mixup, `psebmix` by default.
+  - `mixup_alpha`: the parameter of beta distribution, i.e., the value of alpha. 
+
+Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
+
 ## AUC performance
 
 | Network | BRCA | NSCLC | RCC | Average                                  |
