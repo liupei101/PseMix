@@ -31,12 +31,16 @@ def prepare_clf_dataset(patient_ids:list, cfg, **kws):
         if_remove_slide = kws['filter_slide']
     else:
         if_remove_slide = None
+    if 'random_patch_path' in kws:
+        random_patch_path = kws['random_patch_path']
+    else:
+        random_patch_path = False
 
     if cfg['mixup_type'] == 'remix':
         dataset = WSIProtoPatchClf(patient_ids, path_patch, path_table)
     else:
         dataset = WSIPatchClf(
             patient_ids, path_patch, path_table, path_label=path_label, read_format=feat_format, ratio_sampling=ratio_sampling, 
-            ratio_mask=ratio_mask, coord_path=cfg['path_coord'], filter_slide=if_remove_slide
+            ratio_mask=ratio_mask, coord_path=cfg['path_coord'], filter_slide=if_remove_slide, random_patch_path=random_patch_path
         )
     return dataset

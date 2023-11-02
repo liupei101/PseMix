@@ -39,6 +39,9 @@ class WSIPatchClf(Dataset):
             print("[dataset] Masking instances with ratio_mask = {}".format(ratio_mask))
         else:
             self.ratio_mask = None
+        # used for randomly choosing slides to perform slide-level augmentation
+        self.patch_path_random = kws['random_patch_path']
+        self.patch_path_choice = ['feat-x20-RN50-B-color_norm-vflip', 'feat-x20-RN50-B-color_hed_light']
 
         self.read_path = patch_path
         self.label_path = label_path
@@ -65,6 +68,8 @@ class WSIPatchClf(Dataset):
 
     def summary(self):
         print(f"Dataset WSIPatchClf for {self.mode}: avaiable WSIs count {self.__len__()}")
+        if self.patch_path_random:
+            print("[info] randomly load patch features.")
         if not self.has_patch_label:
             print("[note] the patch-level label is not avaiable, derived by slide label.")
 
@@ -80,7 +85,23 @@ class WSIPatchClf(Dataset):
         label = torch.Tensor([label]).to(torch.long)
 
         if self.mode == 'patch':
-            full_path = osp.join(self.read_path, sid + '.' + self.read_format)
+            if self.patch_path_random:
+                prob = np.random.rand()
+                if prob <= 0.5:
+                    cur_read_path = self.read_path
+                else:
+                    if prob <= 0.75:
+                        cur_sub_path = self.patch_path_choice[0]
+                    elif prob <= 1.00:
+                        cur_sub_path = self.patch_path_choice[1]
+                    else:
+                        cur_sub_path = ""
+                    temp_paths = self.read_path.split('/')
+                    temp_paths[-2] = cur_sub_path
+                    cur_read_path = "/".join(temp_paths)
+                full_path = osp.join(cur_read_path, sid + '.' + self.read_format)
+            else:
+                full_path = osp.join(self.read_path, sid + '.' + self.read_format)
             feats = read_patch_data(full_path, dtype='torch').to(torch.float)
             # if masking patches
             if self.ratio_mask:

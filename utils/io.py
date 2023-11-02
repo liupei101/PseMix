@@ -40,6 +40,11 @@ def read_patch_data(path: str, dtype:str='torch', key='features'):
     else:
         return pdata
 
+def read_patch_feats_from_uid(uid: str, cfg):
+    full_path = osp.join(cfg['path_patch'], uid + '.' + cfg['feat_format'])
+    feats = read_patch_data(full_path, dtype='torch').to(torch.float)
+    return feats
+
 def read_patch_coord(path: str, dtype:str='torch'):
     r"""Read patch coordinates from path.
 
