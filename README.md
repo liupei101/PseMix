@@ -1,6 +1,8 @@
 # PseMix
 
-[[arXiv preprint](https://arxiv.org/abs/2306.16180)] Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification. 
+(on updating)
+
+[arXiv preprint](https://arxiv.org/abs/2306.16180) Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification. 
 
 ## Key features
 

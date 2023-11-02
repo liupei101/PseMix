@@ -13,6 +13,7 @@ path_patch: /NAS02/ExpData/tcga_brca/feat-x20-RN50-B-color_norm/pt_files
 path_coord: /NAS02/ExpData/tcga_brca/hier-x20-tiles-s256/patches
 path_table: ./data_split/tcga_brca/TCGA_BRCA_path_full_subtype.csv
 feat_format: pt
+path_random_patch: False # if use random paths to load features, active it when using basic patch augmentation
 data_split_path: ./data_split/tcga_brca/TCGA_BRCA-fold{}.npz
 data_split_seed: [0, 1, 2, 3]
 data_sampling_ratio: null

@@ -1,5 +1,6 @@
 import os
 import os.path as osp
+import time
 import torch
 import torch.nn as nn
 import torch.nn.functional as F
@@ -20,7 +21,7 @@ from utils.func import seed_everything, parse_str_dims, print_metrics
 from utils.func import add_prefix_to_filename, rename_keys
 from utils.func import fetch_kws, print_config, EarlyStopping
 from utils.func import seed_generator, seed_worker
-from utils.io import read_datasplit_npz, read_maxt_from_table
+from utils.io import read_datasplit_npz, read_maxt_from_table, read_patch_feats_from_uid
 from utils.io import save_prediction_clf, save_prediction_mixclf
 from utils.core import PseudoBag, augment_bag, remix_bag, generate_pseudo_bags
 from utils.core import PseudoBag_Kmeans, PseudoBag_Random, mixup_bag
@@ -126,7 +127,8 @@ class ClfHandler(object):
         print('[exec] finished reading patient IDs from {}'.format(path_split))
 
         # Prepare datasets 
-        train_set  = prepare_clf_dataset(pids_train, self.cfg, ratio_sampling=self.cfg['data_sampling_ratio'])
+        train_set  = prepare_clf_dataset(pids_train, self.cfg, ratio_sampling=self.cfg['data_sampling_ratio'], 
+            random_patch_path=self.cfg['path_random_patch'])
         self.uid.update({'train': train_set.uid})
         if 'data_corrupt_label' in self.cfg and self.cfg['data_corrupt_label'] is not None:
             assert self.cfg['data_corrupt_label'] > 1e-7 and self.cfg['data_corrupt_label'] <= 1.0
@@ -314,7 +316,8 @@ class ClfHandler(object):
             if i_batch % bp_every_batch == 0:
                 # 2. data augmentation
                 if self.cfg['mixup_type'] == 'psebmix' or self.cfg['mixup_type'] == 'pseudo-bag':
-                    pseb_ind_collector = self._collect_pseb_ind(name_loader, idx_collector, x_collector)
+                    pseb_ind_collector = self._collect_pseb_ind(name_loader, idx_collector, x_collector, 
+                                      measure_cost=False, reload_feat=self.cfg['path_random_patch'])
                 else:
                     pseb_ind_collector = None
 
@@ -502,7 +505,12 @@ class ClfHandler(object):
         else:
             return [uids[v] + "-" + str(concat[i].item()) for i, v in enumerate(idxs)]
 
-    def _collect_pseb_ind(self, k, idxs, Xs):
+    def _collect_pseb_ind(self, k, idxs, Xs, measure_cost=False, reload_feat=False):
+        """
+        reload_feat: True/False. If 'path_random_patch' is set to True, this argument will also be set to True.
+            It means that random patch features won't be used and instead the original patch features will be
+            re-loaded for pseudo-bag generation. 
+        """
         cur_pseb_ind = []
         if self.cfg['pseb_gene_once']:
             if k not in self.uid:
@@ -519,13 +527,31 @@ class ClfHandler(object):
                         bag = PseudoBag_Random(self.cfg['pseb_n'])
                     else:
                         pass
-                    self.pseb_ind[uid] = bag.divide(Xs[i])
+                    if measure_cost:
+                        print("Start calculate pseudo-bag division...")
+                        start_time = time.time()
+                    if reload_feat:
+                        print("Reload patch features of {} for pseudo-bag division.".format(uid))
+                        Xs_new = read_patch_feats_from_uid(uid, self.cfg)
+                        Xs_new = Xs_new.unsqueeze(0).cuda()
+                        self.pseb_ind[uid] = bag.divide(Xs_new)
+                    else:
+                        self.pseb_ind[uid] = bag.divide(Xs[i])
+                    if measure_cost:
+                        end_time = time.time()
+                        print("[%s] Finished in %.5f seconds" % (uid, end_time - start_time))
                 cur_pseb_ind.append(self.pseb_ind[uid])
         else:
             for i, batch_id in enumerate(idxs):
                 bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], self.cfg['pseb_proto'], 
                     self.cfg['pseb_pheno_cut'], self.cfg['pseb_iter_tuning'])
-                pseb = bag.divide(Xs[i])
+                if reload_feat:
+                    uid = self.uid[k][batch_id]
+                    Xs_new = read_patch_feats_from_uid(uid, self.cfg)
+                    Xs_new = Xs_new.unsqueeze(0).cuda()
+                    pseb = bag.divide(Xs_new)
+                else:
+                    pseb = bag.divide(Xs[i])
                 cur_pseb_ind.append(pseb)
 
         return cur_pseb_ind
