@@ -1,4 +1,4 @@
-# Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classiffcation (IEEE-TMI 2024)
+# Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification (IEEE-TMI 2024)
 
 [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE-TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) 
 
