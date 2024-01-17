@@ -1,19 +1,22 @@
-# PseMix
+# Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classiffcation (IEEE-TMI 2024)
 
-(on updating)
+[[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE-TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) 
 
-[arXiv preprint](https://arxiv.org/abs/2306.16180) Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification. 
+## Overview
+
+<img src="./doc/conceptual-psemix.png" width="40%" align='left' />
+
+*TL;DR*: 
+> Multiple instance learning (MIL) has become one of the most important frameworks for gigapixel Whole Slide Images (WSIs). In current practice, most MIL networks often face two unavoidable problems in training: i) insufficient WSI data and ii) the sample memorization inclination inherent in neural networks. These problems may hinder MIL models from adequate and efficient training, suppressing the continuous performance promotion of classification models on WSIs. Inspired by the basic idea of Mixup, this paper proposes a new Pseudo-bag Mixup (PseMix) data augmentation scheme to improve the training of MIL models. This scheme generalizes the Mixup strategy for general images to special WSIs via pseudo-bags so as to be applied in MIL-based WSI classification. Cooperated by pseudo-bags, our PseMix fulfills the critical size alignment and semantic alignment in Mixup strategy. Moreover, it is designed as an efficient and decoupled method, neither involving time-consuming operations nor relying on MIL model predictions. Comparative experiments and ablation studies are specially designed to evaluate the effectiveness and advantages of our PseMix. Experimental results show that PseMix could often assist state-of-the-art MIL networks to refresh their classification performance on WSIs. Besides, it could also boost the generalization performance of MIL models in special test scenarios, and promote their robustness to patch occlusion and label noise. 
 
 ## Key features
 
-Applying PseMix (as a data augmentation method) to multiple instance learning networks, e.g., ABMIL, DSMIL, and TransMIL, could 
+Applying PseMix (as a data augmentation method) to MIL networks, e.g., ABMIL, DSMIL, and TransMIL, could 
 - **improve network performance** with minimal extra computational costs, without introducing any complicated techniques
-- help the network obtain **better generalization and robustness** (against patch occlusion and noisy label learning)
+- help the network to obtain **better generalization and robustness** (against patch occlusion and noisy label learning)
 
+## Minimal code example (pseudo-code)
 
-## Applying PseMix to your training pipeline
-
-Minimal code example (pseudo-code):
 ```python
 # generate_pseudo_bags: function for dividing WSI bags into pseudo-bags
 # ALPHA: the hyper-parameter of Beta distribution
@@ -55,14 +58,12 @@ for (X, y) in loader: # load a minibatch
     minibatch_training(new_X, new_y)
 ```
 
-NOTE that we actually use a weighted loss for target mixing, following [Mixup implementation](https://github.com/facebookresearch/mixup-cifar10). Details could be found at [the weighted loss](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407).
-
 Our implementation roughly follows the pseudo-codes above. More details could be found by the following codes:
 
 - [generate_pseudo_bags](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13).
 - [pseudo-bag-level Mixup](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10).
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
-
+- [weighted loss for mixed samples](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407), following [the implementation of Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
 ## Running the code
 
@@ -91,7 +92,9 @@ The configurations that we need to pay attention are as follows:
 
 Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
 
-## AUC performance
+## Performance
+
+AUC, averaged over 5 folds, is as follows:
 
 | Network | BRCA | NSCLC | RCC | Average                                  |
 |---------|------|-------|-----|------------------------------------------|
@@ -102,7 +105,7 @@ Other configurations are explained in `config/cfg_clf_mix.yml`. They could remai
 | TransMIL   | 88.83 | 92.14 | 97.88 | 92.95 |
 | TransMIL **w/ PseMix**   | 90.40 | 93.47 | 97.76 | 93.88 |
 
-## Training with PseMix
+## Training curves
 
 Training curves (training and test AUC, exported from wandb) are listed as follows. Solid lines indicate training with PseMix, and dashed ones are those vanilla models without PseMix.   
 
@@ -114,14 +117,17 @@ Training curves (training and test AUC, exported from wandb) are listed as follo
 
 ## Citation
 
-If you find our code helpful for your research, please using the following bibtex to cite this paper:
+If you find this work helps your research, please consider to cite the paper:
 ```txt
-@misc{liu2023pseudobag,
-      title={Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification}, 
-      author={Pei Liu and Luping Ji and Xinyu Zhang and Feng Ye},
-      year={2023},
-      eprint={2306.16180},
-      archivePrefix={arXiv},
-      primaryClass={cs.CV}
+@article{liu10385148,
+  author={Liu, Pei and Ji, Luping and Zhang, Xinyu and Ye, Feng},
+  journal={IEEE Transactions on Medical Imaging}, 
+  title={Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification}, 
+  year={2024},
+  volume={},
+  number={},
+  pages={1-1},
+  doi={10.1109/TMI.2024.3351213}
 }
 ```
+or `P. Liu, L. Ji, X. Zhang and F. Ye, "Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification," in IEEE Transactions on Medical Imaging, doi: 10.1109/TMI.2024.3351213.`
