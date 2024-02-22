@@ -2,11 +2,14 @@
 
 [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) 
 
+Recent updates:
+- 24/02/22: add useful resources involving pseudo-bags
+
 ## Overview
 
 <!-- Insert a pipeline of your algorithm here if got one -->
 <div align="center">
-    <a href="https://"><img width="1000px" height="auto" src="./docs/procedure-psemix.png"></a>
+    <a href="https://"><img width="100%" height="auto" src="./docs/procedure-psemix.png"></a>
 </div>
 
 *TL;DR*: 
@@ -33,9 +36,9 @@ Training curves (AUC performance on training and test, exported from wandb) are 
 
 | Model                                                                  | Wandb training curves                                  |
 |------------------------------------------------------------------------|--------------------------------------------------------|
-| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="20%" align='left' />  |
-| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="20%" align='left' />   |
-| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="20%" align='left' />      |
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="50%" align='left' />  |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="50%" align='center' />   |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="50%" align='center' />      |
 
 ## ⌨️ Implementation (code example)
 
