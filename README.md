@@ -36,9 +36,9 @@ Training curves (AUC performance on training and test, exported from wandb) are 
 
 | Model                                                                  | Wandb training curves                                  |
 |------------------------------------------------------------------------|--------------------------------------------------------|
-| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="50%" align='left' />  |
-| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="50%" align='center' />   |
-| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="50%" align='center' />      |
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="60%" align='middle' />  |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="60%" align='middle' />   |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="60%" align='middle' />      |
 
 ## ⌨️ Implementation (code example)
 
