@@ -1,11 +1,11 @@
 # PseMix: Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification (IEEE TMI 2024)
 
-[[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) 
+[[HTML]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation)
 
-Recent updates:
+📚 Recent updates:
 - 24/02/22: add useful resources involving pseudo-bags
 
-## Overview
+## 💡 Overview
 
 <!-- Insert a pipeline of your algorithm here if got one -->
 <div align="center">
