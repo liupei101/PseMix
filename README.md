@@ -22,7 +22,7 @@ Applying PseMix (as a data augmentation method) in the training of MIL networks 
 (1) **improve network performance** with minimal extra computational costs:
 
 | Network | BRCA | NSCLC | RCC | Average AUC                              |
-|---------|------|-------|-----|------------------------------------------|
+|---------|------|-------|-----| :--------------------------------------: |
 | [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)   | 87.05 | 92.23 | 97.36 | 92.21 |
 | [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) **w/ PseMix**   | **89.49** | **93.01** | **98.02** | **93.51** |
 | [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)   | 87.73 | 92.99 | 97.65 | 92.79 |
