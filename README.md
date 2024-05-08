@@ -2,7 +2,7 @@
 
 *IEEE Transaction on Medical Imaging, 2024*
 
-[[Journal Link]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv]](https://arxiv.org/abs/2306.16180) | [[PseMix Walkthrough]](https://github.com/liupei101/PseMix?tab=readme-ov-file#psemix-walkthrough) | [[WSI Preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#wsi-preprocessing) | [[Related Resources]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation)
+[[Journal Link]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv]](https://arxiv.org/abs/2306.16180) | [[PseMix Walkthrough]](https://github.com/liupei101/PseMix?tab=readme-ov-file#psemix-walkthrough) | [[WSI Preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#wsi-preprocessing) | [[Related Resources]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-related-resources) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation)
 
 **Abstract**: Multiple instance learning (MIL) has become one of the most important frameworks for gigapixel Whole Slide Images (WSIs). In current practice, most MIL networks often face two unavoidable problems in training: i) insufficient WSI data and ii) the sample memorization inclination inherent in neural networks. To address these problems, this paper proposes a new Pseudo-bag Mixup (PseMix) data augmentation scheme, inspired by the basic idea of Mixup. Cooperated by pseudo-bags, this scheme fulfills the critical size alignment and semantic alignment in Mixup. Moreover, it is efficient and plugin-and-play, neither involving time-consuming operations nor relying on model predictions. Experimental results show that PseMix could often improve the performance of state-of-the-art MIL networks. Most importantly, it could also boost the generalization performance of MIL models in special test scenarios, and promote their robustness to patch occlusion and label noise. 
 
@@ -36,9 +36,9 @@ Adopting PseMix in training MIL networks could
 
 (2) **obtain better generalization and robustness**:
 
-Training curves, showing the AUC performance on training and test data (exported from wandb), are given below. In these figures, solid lines indicate training w/ PseMix, and dashed ones are those vanilla models w/o PseMix.  
+Training curves, showing the AUC performance on training and test data (exported from wandb), are given below.  
 
-| Model                                                                  | Wandb training curves                                  |
+| Model                                                                  | Wandb training curves (solid line: w/ PseMix; dashed line: w/o PseMix)                                 |
 | :--------------------------------------------------------------------: | :----------------------------------------------------: |
 | [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="55%" align='middle' />  |
 | [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="55%" align='middle' />   |
@@ -113,6 +113,10 @@ for (X, y) in loader: # load a minibatch
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
 - [weighted loss for mixed samples](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407), following [the implementation of Mixup](https://github.com/facebookresearch/mixup-cifar10).
 
+## WSI Preprocessing
+
+The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
+
 ## 👩‍💻 Running the Code
 
 Using the following command to load running configurations from a yaml file and train the model:
@@ -140,11 +144,7 @@ The configurations that we need to pay attention are as follows:
 
 Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
 
-## WSI Preprocessing
-
-The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
-
-## 🔥 Useful Resources
+## 🔥 Related Resources
 
 Here we list the related works involving **pseudo-bags** or using **pseudo-bags for training deep MIL networks**.
 
