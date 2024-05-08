@@ -2,7 +2,7 @@
 
 *IEEE Transaction on Medical Imaging, 2024*
 
-[[Journal Link]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv]](https://arxiv.org/abs/2306.16180) | [[PseMix Walkthrough]](https://github.com/liupei101/PseMix?tab=readme-ov-file#psemix-walkthrough) | [[WSI Preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-wsi-preprocessing) | [[Related Resources]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation)
+[[Journal Link]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv]](https://arxiv.org/abs/2306.16180) | [[PseMix Walkthrough]](https://github.com/liupei101/PseMix?tab=readme-ov-file#psemix-walkthrough) | [[WSI Preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#wsi-preprocessing) | [[Related Resources]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation)
 
 **Abstract**: Multiple instance learning (MIL) has become one of the most important frameworks for gigapixel Whole Slide Images (WSIs). In current practice, most MIL networks often face two unavoidable problems in training: i) insufficient WSI data and ii) the sample memorization inclination inherent in neural networks. To address these problems, this paper proposes a new Pseudo-bag Mixup (PseMix) data augmentation scheme, inspired by the basic idea of Mixup. Cooperated by pseudo-bags, this scheme fulfills the critical size alignment and semantic alignment in Mixup. Moreover, it is efficient and plugin-and-play, neither involving time-consuming operations nor relying on model predictions. Experimental results show that PseMix could often improve the performance of state-of-the-art MIL networks. Most importantly, it could also boost the generalization performance of MIL models in special test scenarios, and promote their robustness to patch occlusion and label noise. 
 
@@ -11,6 +11,7 @@
     <a href="https://"><img width="100%" height="auto" src="./docs/procedure-psemix.png"></a>
 </div>
 
+---
 
 📚 Recent updates:
 - 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
@@ -45,9 +46,11 @@ Training curves, showing the AUC performance on training and test data (exported
 
 ## PseMix Walkthrough
 
-PseMix contains two key steps: (1) pseudo-bag generation and (2) pseudo-bag mixup. There are alternative ways for you to quickly understand the key steps inner PseMix:
-- [the notebook](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough.ipynb) to get started with generating pseudo-bags and mixing pseudo-bags.
-- an overall description of the two steps, presented below. 
+PseMix contains two key steps: i) pseudo-bag generation and ii) pseudo-bag mixup. 
+
+There are alternative ways for you to quickly understand the key steps inner PseMix:
+- a [notebook](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough.ipynb) to get started with generating pseudo-bags and mixing pseudo-bags.
+- an overall description of the two steps, given below. 
 
 ### Step 1. Pseudo-bag Generation
 
@@ -104,7 +107,7 @@ for (X, y) in loader: # load a minibatch
     minibatch_training(new_X, new_y)
 ```
 
-**More details** could be found by
+**More details** can be found by
 
 - [pseudo-bag-level Mixup](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10).
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
@@ -137,7 +140,7 @@ The configurations that we need to pay attention are as follows:
 
 Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
 
-## ⌨️ WSI Preprocessing
+## WSI Preprocessing
 
 The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
 
