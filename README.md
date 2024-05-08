@@ -1,6 +1,6 @@
 # PseMix: Pseudo-Bag Mixup Augmentation for MIL-Based Whole Slide Image Classification (IEEE TMI 2024)
 
-[[HTML]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[WSI preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-wsi-preprocessing) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation) | [[Pseudo-bag papers]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources)
+[[HTML]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[WSI preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#wsi-preprocessing) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation) | [[Pseudo-bag papers]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources)
 
 📚 Recent updates:
 - 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
@@ -124,7 +124,7 @@ The configurations that we need to pay attention are as follows:
 
 Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
 
-## 🔥 WSI Preprocessing
+## WSI Preprocessing
 
 The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
 
