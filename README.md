@@ -38,11 +38,9 @@ Adopting PseMix in training MIL networks could
 
 Training curves, showing the AUC performance on training and test data (exported from wandb), are given below.  
 
-| Model                                                                  | Wandb training curves (solid line: w/ PseMix; dashed line: w/o PseMix)                                 |
-| :--------------------------------------------------------------------: | :----------------------------------------------------: |
-| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="55%" align='middle' />  |
-| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="55%" align='middle' />   |
-| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="55%" align='middle' />      |
+<div align="center">
+    <a href="https://"><img width="75%" height="auto" src="./docs/psemix-training-curves.png"></a>
+</div>
 
 ## PseMix Walkthrough
 
