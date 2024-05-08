@@ -1,8 +1,9 @@
 # PseMix: Pseudo-Bag Mixup Augmentation for MIL-Based Whole Slide Image Classification (IEEE TMI 2024)
 
-[[HTML]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation) | [[Pseudo-bag papers]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources)
+[[HTML]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[WSI preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-wsi-preprocessing) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation) | [[Pseudo-bag papers]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources)
 
 📚 Recent updates:
+- 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
 - 24/02/27: add missing codes regrading the module of `optim`
 - 24/02/22: add useful research papers involving pseudo-bags
 
@@ -15,21 +16,6 @@
 
 *TL;DR*: 
 > Multiple instance learning (MIL) has become one of the most important frameworks for gigapixel Whole Slide Images (WSIs). In current practice, most MIL networks often face two unavoidable problems in training: i) insufficient WSI data and ii) the sample memorization inclination inherent in neural networks. To address these problems, this paper proposes a new Pseudo-bag Mixup (PseMix) data augmentation scheme, inspired by the basic idea of Mixup. Cooperated by pseudo-bags, this scheme fulfills the critical size alignment and semantic alignment in Mixup. Moreover, it is efficient and plugin-and-play, neither involving time-consuming operations nor relying on model predictions. Experimental results show that PseMix could often improve the performance of state-of-the-art MIL networks. Most importantly, it could also boost the generalization performance of MIL models in special test scenarios, and promote their robustness to patch occlusion and label noise. 
-
-## 🔥 Useful Resources
-
-Here we list the related works involving **pseudo-bags** or using **pseudo-bags for training deep MIL networks**.
-
-| Model          | Subfield    | Paper             | Code            | Base   |
-| :------------- | :---------- | :---------------- | :-------------- | :----- |
-| BDOCOX (TMI'21)         | WSI Survival Analysis | [Weakly supervised deep ordinal cox model for survival prediction from wholeslide pathological images](https://ieeexplore.ieee.org/document/9486947) | - | K-means-based pseudo-bag division |
-| DTFD-MIL (CVPR'22)      | WSI Classification    | [Dtfd-mil: Double-tier feature distillation multiple instance learning for histopathology whole slide image classification](https://arxiv.org/abs/2203.12081) | [Github](https://github.com/hrzhang1123/DTFD-MIL)            | Random pseudo-bag division   |
-| ProDiv (CMPB'24)     | WSI Classification    | [ProDiv: Prototype-driven Consistent Pseudo-bag Division for Whole-slide Image Classification](https://www.sciencedirect.com/science/article/pii/S0169260724001573) | [Github](https://github.com/UESTC-nnLab/ProDiv)            | Prototype-based consistent pseudo-bag division     |
-| PseMix (TMI'24)         | WSI Classification   | [Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification](https://ieeexplore.ieee.org/abstract/document/10385148) | [Github](https://github.com/liupei101/PseMix)                 | Pseudo-bag Mixup  |
-| ICMIL       | WSI classification    | [Rethinking Multiple Instance Learning for Whole Slide Image Classification: A Bag-Level Classifier is a Good Instance-Level Teacher](https://arxiv.org/abs/2312.01099) | [Github](https://github.com/Dootmaan/ICMIL)           |  Utilizing pseudo-bags in training   |
-| PMIL       | WSI classification     | [Shapley Values-enabled Progressive Pseudo Bag Augmentation for Whole Slide Image Classification](https://arxiv.org/abs/2312.05490) | -         |   Progressive pseudo-bag augmentation  |
-
-**NOTE**: please open *a new PR* if you want to add your work in this resource list.
 
 ## 🌈 Key Features
 
@@ -137,7 +123,25 @@ The configurations that we need to pay attention are as follows:
   - `mixup_alpha`: the parameter of beta distribution, i.e., the value of alpha. 
 
 Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
- 
+
+## 🔥 WSI Preprocessing
+
+The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
+
+## 🔥 Useful Resources
+
+Here we list the related works involving **pseudo-bags** or using **pseudo-bags for training deep MIL networks**.
+
+| Model          | Subfield    | Paper             | Code            | Base   |
+| :------------- | :---------- | :---------------- | :-------------- | :----- |
+| BDOCOX (TMI'21)         | WSI Survival Analysis | [Weakly supervised deep ordinal cox model for survival prediction from wholeslide pathological images](https://ieeexplore.ieee.org/document/9486947) | - | K-means-based pseudo-bag division |
+| DTFD-MIL (CVPR'22)      | WSI Classification    | [Dtfd-mil: Double-tier feature distillation multiple instance learning for histopathology whole slide image classification](https://arxiv.org/abs/2203.12081) | [Github](https://github.com/hrzhang1123/DTFD-MIL)            | Random pseudo-bag division   |
+| ProDiv (CMPB'24)     | WSI Classification    | [ProDiv: Prototype-driven Consistent Pseudo-bag Division for Whole-slide Image Classification](https://www.sciencedirect.com/science/article/pii/S0169260724001573) | [Github](https://github.com/UESTC-nnLab/ProDiv)            | Prototype-based consistent pseudo-bag division     |
+| PseMix (TMI'24)         | WSI Classification   | [Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification](https://ieeexplore.ieee.org/abstract/document/10385148) | [Github](https://github.com/liupei101/PseMix)                 | Pseudo-bag Mixup  |
+| ICMIL       | WSI classification    | [Rethinking Multiple Instance Learning for Whole Slide Image Classification: A Bag-Level Classifier is a Good Instance-Level Teacher](https://arxiv.org/abs/2312.01099) | [Github](https://github.com/Dootmaan/ICMIL)           |  Utilizing pseudo-bags in training   |
+| PMIL       | WSI classification     | [Shapley Values-enabled Progressive Pseudo Bag Augmentation for Whole Slide Image Classification](https://arxiv.org/abs/2312.05490) | -         |   Progressive pseudo-bag augmentation  |
+
+**NOTE**: please open *a new PR* if you want to add your work in this resource list.
 
 ## 📝 Citation
 
