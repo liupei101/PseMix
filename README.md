@@ -1,27 +1,28 @@
-# PseMix: Pseudo-Bag Mixup Augmentation for MIL-Based Whole Slide Image Classification (IEEE TMI 2024)
+# PseMix: Pseudo-Bag Mixup Augmentation for MIL-Based Whole Slide Image Classification 
 
-[[HTML]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv preprint]](https://arxiv.org/abs/2306.16180) | [[IEEE TMI]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[WSI preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#wsi-preprocessing) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation) | [[Pseudo-bag papers]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources)
+*IEEE Transaction on Medical Imaging, 2024*
 
-📚 Recent updates:
-- 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
-- 24/02/27: add missing codes regrading the module of `optim`
-- 24/02/22: add useful research papers involving pseudo-bags
+[[Journal Link]](https://ieeexplore.ieee.org/abstract/document/10385148) | [[arXiv]](https://arxiv.org/abs/2306.16180) | [[PseMix Walkthrough]](https://github.com/liupei101/PseMix?tab=readme-ov-file#psemix-walkthrough) | [[WSI Preprocessing]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-wsi-preprocessing) | [[Related Resources]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-useful-resources) | [[Citation]](https://github.com/liupei101/PseMix?tab=readme-ov-file#-citation)
 
-## 💡 Overview
+**Abstract**: Multiple instance learning (MIL) has become one of the most important frameworks for gigapixel Whole Slide Images (WSIs). In current practice, most MIL networks often face two unavoidable problems in training: i) insufficient WSI data and ii) the sample memorization inclination inherent in neural networks. To address these problems, this paper proposes a new Pseudo-bag Mixup (PseMix) data augmentation scheme, inspired by the basic idea of Mixup. Cooperated by pseudo-bags, this scheme fulfills the critical size alignment and semantic alignment in Mixup. Moreover, it is efficient and plugin-and-play, neither involving time-consuming operations nor relying on model predictions. Experimental results show that PseMix could often improve the performance of state-of-the-art MIL networks. Most importantly, it could also boost the generalization performance of MIL models in special test scenarios, and promote their robustness to patch occlusion and label noise. 
 
 <!-- Insert a pipeline of your algorithm here if got one -->
 <div align="center">
     <a href="https://"><img width="100%" height="auto" src="./docs/procedure-psemix.png"></a>
 </div>
 
-*TL;DR*: 
-> Multiple instance learning (MIL) has become one of the most important frameworks for gigapixel Whole Slide Images (WSIs). In current practice, most MIL networks often face two unavoidable problems in training: i) insufficient WSI data and ii) the sample memorization inclination inherent in neural networks. To address these problems, this paper proposes a new Pseudo-bag Mixup (PseMix) data augmentation scheme, inspired by the basic idea of Mixup. Cooperated by pseudo-bags, this scheme fulfills the critical size alignment and semantic alignment in Mixup. Moreover, it is efficient and plugin-and-play, neither involving time-consuming operations nor relying on model predictions. Experimental results show that PseMix could often improve the performance of state-of-the-art MIL networks. Most importantly, it could also boost the generalization performance of MIL models in special test scenarios, and promote their robustness to patch occlusion and label noise. 
 
-## 🌈 Key Features
+📚 Recent updates:
+- 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
+- 24/02/27: add missing codes regrading the module of `optim`
+- 24/02/22: add useful research papers involving pseudo-bags
 
-Applying PseMix (as a data augmentation method) in the training of MIL networks (e.g., ABMIL, DSMIL, and TransMIL) could 
 
-(1) **improve network performance** with minimal extra computational costs:
+## Why use PseMix?
+
+Adopting PseMix in training MIL networks could 
+
+(1) **improve performance with minimal costs**:
 
 | Network | BRCA | NSCLC | RCC | Average AUC                              |
 |---------|------|-------|-----| :--------------------------------------: |
@@ -32,19 +33,35 @@ Applying PseMix (as a data augmentation method) in the training of MIL networks 
 | [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)   | 88.83 | 92.14 | 97.88 | 92.95 |
 | [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) **w/ PseMix**   | **90.40** | **93.47** | **97.76** | **93.88** |
 
-(2) help the network in **generalization and robustness**:
+(2) **obtain better generalization and robustness**:
 
-Training curves (AUC performance on training and test, exported from wandb) are given as follows. Solid lines indicate training with PseMix, and dashed ones are those vanilla models without PseMix.  
+Training curves, showing the AUC performance on training and test data (exported from wandb), are given below. In these figures, solid lines indicate training w/ PseMix, and dashed ones are those vanilla models w/o PseMix.  
 
 | Model                                                                  | Wandb training curves                                  |
 | :--------------------------------------------------------------------: | :----------------------------------------------------: |
-| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="60%" align='middle' />  |
-| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="60%" align='middle' />   |
-| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="60%" align='middle' />      |
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html)                | <img src="docs/wandb-abmil-train.png" width="55%" align='middle' />  |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf)         |  <img src="docs/wandb-dsmil-train.png" width="55%" align='middle' />   |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc)     | <img src="docs/wandb-transmil-train.png" width="55%" align='middle' />      |
 
-## ⌨️ Implementation (code example)
+## PseMix Walkthrough
 
-### Pseudo-bag Mixup
+PseMix contains two key steps: (1) pseudo-bag generation and (2) pseudo-bag mixup. There are alternative ways for you to quickly understand the key steps inner PseMix:
+- [the notebook](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough.ipynb) to get started with generating pseudo-bags and mixing pseudo-bags.
+- an overall description of the two steps, presented below. 
+
+### Step 1. Pseudo-bag Generation
+
+Pseudo-bag generation contains two sub-steps:
+- Phenotype clustering by 
+  - bag-prototype-based instance clustering
+  - cluster fine-tuning
+- Phenotype-stratified sampling
+
+Its implementation details can be found via the function [`generate_pseudo_bags`](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13). This predefined function will be directly used and called in the next step, pseudo-bag mixup. 
+
+### Step 2. Pseudo-bag Mixup
+
+Below is the pseudo-code of pseudo-bag mixup:
 
 ```python
 # generate_pseudo_bags: function for dividing WSI bags into pseudo-bags
@@ -87,15 +104,11 @@ for (X, y) in loader: # load a minibatch
     minibatch_training(new_X, new_y)
 ```
 
-Additional details could be found at the following codes:
+**More details** could be found by
 
 - [pseudo-bag-level Mixup](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10).
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
 - [weighted loss for mixed samples](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407), following [the implementation of Mixup](https://github.com/facebookresearch/mixup-cifar10).
-
-### Pseudo-bag Generation
-
-Please refer to our code: [generate_pseudo_bags](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13).
 
 ## 👩‍💻 Running the Code
 
@@ -124,7 +137,7 @@ The configurations that we need to pay attention are as follows:
 
 Other configurations are explained in `config/cfg_clf_mix.yml`. They could remain as before without any changes. 
 
-## WSI Preprocessing
+## ⌨️ WSI Preprocessing
 
 The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
 
