@@ -38,8 +38,8 @@ Adopting PseMix in training MIL networks could
 
 Training curves, showing the AUC performance on training and test data (exported from wandb), are given below.  
 
-<div align="center">
-    <a href="https://"><img width="75%" height="auto" src="./docs/psemix-training-curves.png"></a>
+<div align="left">
+    <a href="https://"><img width="70%" height="auto" src="./docs/psemix-training-curves.png"></a>
 </div>
 
 ## PseMix Walkthrough
