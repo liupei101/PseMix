@@ -14,6 +14,7 @@
 ---
 
 📚 Recent updates:
+- 24/05/09: add a notebook of PseMix Walkthrough: [Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb)
 - 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
 - 24/02/27: add missing codes regrading the module of `optim`
 - 24/02/22: add useful research papers involving pseudo-bags
@@ -47,7 +48,7 @@ Training curves, showing the AUC performance on training and test data (exported
 PseMix contains two key steps: i) pseudo-bag generation and ii) pseudo-bag mixup. 
 
 There are alternative ways for you to quickly understand the key steps inner PseMix:
-- a [notebook](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough.ipynb) to get started with generating pseudo-bags and mixing pseudo-bags.
+- Two [notebooks] to help you get started with [generating pseudo-bags](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb) and [mixing pseudo-bags](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb).
 - an overall description of the two steps, given below. 
 
 ### Step 1. Pseudo-bag Generation
