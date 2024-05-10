@@ -14,7 +14,7 @@
 ---
 
 📚 Recent updates:
-- 24/05/09: add a PseMix Walkthrough notebook: [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb)
+- 24/05/09: add two PseMix Walkthrough notebooks: [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb) and [Notebook - Pseudo-bag Mixup](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb)
 - 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
 - 24/02/27: add missing codes regrading the module of `optim`
 - 24/02/22: add useful research papers involving pseudo-bags
