@@ -9,6 +9,8 @@ import torch.nn.functional as F
 from scipy.spatial.distance import cdist
 from sklearn.cluster import KMeans
 
+from .utils_diem import DirNIWNet
+
 
 def augment_bag(bags, labels, alpha=1.0, method='sebmix', **kws):
     n_batch = len(bags)
@@ -150,17 +152,27 @@ class PseudoBag(object):
         n (int): pseudo-bag number to divide.
         l (int): phenotype number to consider.
     """
-    def __init__(self, n: int, l: int, proto_method: str = 'mean', pheno_cut_method: str = 'quantile', 
-        iter_fine_tuning: int = 0):
-        assert proto_method in ['max', 'mean']
-        assert pheno_cut_method in ['uniform', 'quantile']
+    def __init__(self, n: int, l: int, clustering_method: str = 'ProtoDiv', **kws):
+        assert clustering_method in ['DIEM', 'ProtoDiv']
+        
+        if clustering_method == 'ProtoDiv':
+            assert 'proto_method' in kws and 'pheno_cut_method' in kws and 'iter_fine_tuning' in kws
+            self.proto_method = kws['proto_method']
+            self.pheno_cut_method = kws['pheno_cut_method']
+            self.iter_fine_tuning = kws['iter_fine_tuning']
+
+            assert self.proto_method in ['max', 'mean']
+            assert self.pheno_cut_method in ['uniform', 'quantile']
+
+        elif clustering_method == 'DIEM':
+            assert 'path_proto' in kws and 'num_iter' in kws
+            self.DIEM = DirNIWNet(l, **kws)
+
         self.n = n
         self.l = l
-        self.proto_method = proto_method
-        self.iter_fine_tuning = iter_fine_tuning
-        self.pheno_cut_method = pheno_cut_method
-        self.norm_X = None
-        print("Prototype-based pseudo-bag dividing: n = {}, l = {}".format(n, l))
+        self.clustering_method = clustering_method
+        
+        print(f"{clustering_method}-based pseudo-bag dividing: n = {n}, l = {l}.")
 
     def divide(self, bag: Tensor, ptype: Optional[Tensor] = None, ret_pseudo_bag: bool = False):
         """
@@ -169,22 +181,59 @@ class PseudoBag(object):
         """
         if len(bag.shape) > 2:
             bag = bag.squeeze(0)
-        # process prototype
-        if ptype is not None:
-            self.ptype = ptype
-        elif self.proto_method == 'mean':
-            self.ptype = torch.mean(bag, dim=0)
-        elif self.proto_method == 'max':
-            self.ptype, _ = torch.max(bag, dim=0)
+
+        # 1. obtain phenotype clusters
+        label_phe = self.get_phenotype_clusters(bag, ptype=ptype)
+
+        # 2. divide pseudo-bags by sampling from each phenotype cluster 
+        label_psebag = torch.zeros_like(label_phe)
+        for c in range(self.l):
+            c_size = (label_phe == c).sum().item()
+            label_psebag[label_phe == c] = self.uniform_assign(c_size, self.n).to(label_psebag.device)
+
+        if ret_pseudo_bag:
+            pseudo_bags = [bag[label_psebag == i] for i in range(self.n)]
+            return label_psebag, pseudo_bags
+
+        return label_psebag
+
+    def get_phenotype_clusters(self, bag, **kws):
+        if self.clustering_method == 'ProtoDiv':
+            assert 'ptype' in kws
+            clusters = self.protodiv_clustering(bag, ptype=kws['ptype'])
+            
+        elif self.clustering_method == 'DIEM':
+            clusters = self.diem_clustering(bag)
+
         else:
-            self.ptype = None
-        self.norm_ptype = F.normalize(self.ptype, p=2, dim=-1)
+            clusters = None
+
+        return clusters
+
+    ########################################################################
+    ##### The following are methods used for DIEM-based clustering #####
+    ########################################################################
+    def diem_clustering(self, bag):
+        bag = bag.unsqueeze(0) # [B, N, d], B = 1
+        prior_m, prior_V = self.DIEM()
+        prior = (prior_m.to(bag), prior_V.to(bag))
+        pi, mu, Sigma, qq = self.DIEM.map_em(
+            bag, prior=prior
+        )
+        qq = qq[0, :, :] # each row: coef distribution over compenents 
+        _, label_phe = torch.max(qq, dim=1) # shape: (N, )
         
+        return label_phe
+
+    ########################################################################
+    ##### The following are methods used for ProtoDiv-based clustering #####
+    ########################################################################
+    def protodiv_clustering(self, bag, ptype=None, metric='cosine'):
         # calculate distances
-        dis, limits = self.measure_distance_from_prototype(bag) # [N, ], tuple
+        dis, limits = self.protodiv_measure_distance(bag, ptype=ptype) # [N, ], tuple
         
         # stratified random dividing
-        # 1. cut into phenotype clusters
+        # the first step: cut into phenotype clusters
         if self.pheno_cut_method == 'uniform':
             step = (limits[1] - limits[0]) / self.l
             label_phe = ((dis - limits[0]) / step).long().clamp(0, self.l - 1)
@@ -196,49 +245,43 @@ class PseudoBag(object):
             label_phe = torch.LongTensor(label_phe).to(dis.device)
         else:
             pass
+
         # if fine-tuning phenotype clusters
         if self.iter_fine_tuning > 0:
-            label_phe = self.fine_tune_cluster(bag, label_phe)
+            ind_cluster = label_phe
+            for i in range(self.iter_fine_tuning):
+                centroids, _ = self.mean_by_label(bag, ind_cluster)
+                if metric == 'cosine':
+                    norm_centroids = F.normalize(centroids, p=2, dim=-1) # [l, d]
+                    norm_X = F.normalize(bag, p=2, dim=-1)
+                    dis = torch.mm(norm_X, norm_centroids.T) # [N, d] x [d, l] -> [N, l]
+                else:
+                    raise NotImplementedError("cannot recognize {}".format(metric))
+                _, new_ind = torch.max(dis, dim=1)
+                ind_cluster = new_ind
+            label_phe = ind_cluster
 
-        # 2. sample from each phenotype cluster
-        label_psebag = torch.zeros_like(label_phe)
-        for c in range(self.l):
-            c_size = (label_phe == c).sum().item()
-            label_psebag[label_phe == c] = self.uniform_assign(c_size, self.n).to(label_psebag.device)
+        return label_phe
 
-        if ret_pseudo_bag:
-            pseudo_bags = [bag[label_psebag == i] for i in range(self.n)]
-            return label_psebag, pseudo_bags
-        
-        return label_psebag
+    def protodiv_measure_distance(self, X, ptype=None, metric='cosine'):
+        # process prototype
+        if ptype is not None:
+            ptype = ptype
+        elif self.proto_method == 'mean':
+            ptype = torch.mean(X, dim=0)
+        elif self.proto_method == 'max':
+            ptype, _ = torch.max(X, dim=0)
 
-    def measure_distance_from_prototype(self, X, metric='cosine'):
-        assert X.shape[-1] == self.norm_ptype.shape[-1]
+        norm_ptype = F.normalize(ptype, p=2, dim=-1)
+        assert X.shape[-1] == norm_ptype.shape[-1]
+
         if metric == 'cosine':
             norm_X = F.normalize(X, p=2, dim=-1)
-            dis = torch.mm(norm_X, self.norm_ptype.view(-1, 1)).squeeze() # [N, 1] -> [N, ]
+            dis = torch.mm(norm_X, norm_ptype.view(-1, 1)).squeeze() # [N, 1] -> [N, ]
             limits = (-1, 1)
-            self.norm_X = norm_X
         else:
             raise NotImplementedError("cannot recognize {}".format(metric))
         return dis, limits
-
-    def fine_tune_cluster(self, X, ind_cluster, metric='cosine'):
-        """
-        X (Tensor): bag features with a shape of [N, d]
-        ind_cluster (Tensor): indicator of cluster assignment with a shape of [N, ]
-        """
-        assert self.iter_fine_tuning > 0
-        for i in range(self.iter_fine_tuning):
-            centroids, _ = self.mean_by_label(X, ind_cluster)
-            if metric == 'cosine':
-                norm_centroids = F.normalize(centroids, p=2, dim=-1) # [l, d]
-                dis = torch.mm(self.norm_X, norm_centroids.T) # [N, d] x [d, l] -> [N, l]
-            else:
-                raise NotImplementedError("cannot recognize {}".format(metric))
-            _, new_ind = torch.max(dis, dim=1)
-            ind_cluster = new_ind
-        return new_ind
 
     @staticmethod
     def uniform_assign(N, num_label):

@@ -3,24 +3,24 @@ cuda_id: 0
 seed: 42
 
 wandb_dir: /home/liup/repo/PseMix
-wandb_prj: PseMix-BRCA
-save_path: ./result/psemix-brca/abmil
+wandb_prj: PseMix-BRCA-CONCH
+save_path: ./result/psemix-brca/ABMIL-with_PseMix_ProtoDiv
 save_prediction: True
 eval_training_loader_per_epoch: False
 
 # data loading
-path_patch: /NAS02/ExpData/tcga_brca/feat-x20-RN50-B-color_norm/pt_files
+path_patch: /NAS02/ExpData/tcga_brca/feat-x20-CONCH/pt_files
 path_coord: /NAS02/ExpData/tcga_brca/hier-x20-tiles-s256/patches
 path_table: ./data_split/tcga_brca/TCGA_BRCA_path_full_subtype.csv
 feat_format: pt
 path_random_patch: False # if use random paths to load features, active it when using basic patch augmentation
 data_split_path: ./data_split/tcga_brca/TCGA_BRCA-fold{}.npz
-data_split_seed: [0, 1, 2, 3]
+data_split_fold: [0, 1, 2, 3]
 data_sampling_ratio: null
 data_corrupt_label: null # default null.
 
 # network architecture
-net_dims: 1024-256-2 # 1024-256-2 / 768-256-2 / 384-384/128-2
+net_dims: 512-256-2 # 512-256-2
 backbone: ABMIL # ABMIL, DSMIL, TransMIL
 use_feat_proj: True
 init_wt: True
@@ -28,13 +28,20 @@ drop_rate: 0.0
 
 # pseudo-bag settings
 pseb_dividing: proto # proto by default, proto / kmeans / random
+pseb_clustering: ProtoDiv # clustering method, ProtoDiv / DIEM 
 pseb_gene_once: True
 pseb_n: 30 # default 30
 pseb_l: 8 # default 8
+pseb_mixup_prob: 0.4 # the parameter p
+
+# settings of pseb_clustering = ProtoDiv: ProtoDiv-based clustering
 pseb_proto: mean # mean / max, default using mean prototype
 pseb_iter_tuning: 8 # default 8, int, 0 / 1 / 2 / ...
 pseb_pheno_cut: uniform # uniform / quantile, default uniform
-pseb_mixup_prob: 0.4 # the parameter p
+
+# settings of pseb_clustering = DIEM: DIEM-based clustering
+pseb_diem_path_proto: ./data_split/tcga_brca/prototypes_fold{}_train_c8_feat-x20-CONCH_kmeans_num_1.0e+06.pkl
+pseb_diem_num_iter: 1
 
 # mixup 
 mixup_type: psebmix # psebmix, insmix or none, indicating the mixup of pseudo-bags or instances, or NO mixup 

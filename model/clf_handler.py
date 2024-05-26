@@ -42,10 +42,10 @@ class ClfHandler(object):
         # path setup
         if cfg['test']:
             if cfg['test_mask_ratio'] is None:
-                cfg['test_save_path'] = cfg['test_save_path'].format(cfg['data_split_seed'])
+                cfg['test_save_path'] = cfg['test_save_path'].format(cfg['data_split_fold'])
             else:
-                cfg['test_save_path'] = cfg['test_save_path'].format(cfg['test_mask_ratio'], cfg['data_split_seed'])
-            cfg['test_load_path'] = cfg['test_load_path'].format(cfg['data_split_seed'])
+                cfg['test_save_path'] = cfg['test_save_path'].format(cfg['test_mask_ratio'], cfg['data_split_fold'])
+            cfg['test_load_path'] = cfg['test_load_path'].format(cfg['data_split_fold'])
             if not osp.exists(cfg['test_save_path']):
                 os.makedirs(cfg['test_save_path'])
             run_name = cfg['test_save_path'].split('/')[-1]
@@ -117,10 +117,7 @@ class ClfHandler(object):
         
         # Prepare data spliting 
         if "{}" in self.cfg['data_split_path']:
-            if 'data_split_fold' in self.cfg:
-                path_split = self.cfg['data_split_path'].format(self.cfg['data_split_seed'], self.cfg['data_split_fold'])
-            else:
-                path_split = self.cfg['data_split_path'].format(self.cfg['data_split_seed'])
+            path_split = self.cfg['data_split_path'].format(self.cfg['data_split_fold'])
         else:
             path_split = self.cfg['data_split_path']
         pids_train, pids_val, pids_test = read_datasplit_npz(path_split)
@@ -186,7 +183,7 @@ class ClfHandler(object):
         mode_name = 'test_mode'
         
         # Prepare datasets 
-        path_split = self.cfg['data_split_path'].format(self.cfg['data_split_seed'])
+        path_split = self.cfg['data_split_path'].format(self.cfg['data_split_fold'])
         pids_train, pids_val, pids_test = read_datasplit_npz(path_split)
         if self.cfg['test_path'] == 'train':
             pids = pids_train
@@ -316,8 +313,10 @@ class ClfHandler(object):
             if i_batch % bp_every_batch == 0:
                 # 2. data augmentation
                 if self.cfg['mixup_type'] == 'psebmix' or self.cfg['mixup_type'] == 'pseudo-bag':
-                    pseb_ind_collector = self._collect_pseb_ind(name_loader, idx_collector, x_collector, 
-                                      measure_cost=False, reload_feat=self.cfg['path_random_patch'])
+                    pseb_ind_collector = self._collect_pseb_ind(
+                        name_loader, idx_collector, x_collector, 
+                        measure_cost=False, reload_feat=self.cfg['path_random_patch']
+                    )
                 else:
                     pseb_ind_collector = None
 
@@ -519,8 +518,23 @@ class ClfHandler(object):
                 uid = self.uid[k][batch_id]
                 if uid not in self.pseb_ind:
                     if 'pseb_dividing' not in self.cfg or self.cfg['pseb_dividing'] == 'proto':
-                        bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], self.cfg['pseb_proto'], 
-                            self.cfg['pseb_pheno_cut'], self.cfg['pseb_iter_tuning'])
+                        if self.cfg['pseb_clustering'] == 'ProtoDiv':
+                            bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], 
+                                clustering_method='ProtoDiv',
+                                proto_method=self.cfg['pseb_proto'], 
+                                pheno_cut_method=self.cfg['pseb_pheno_cut'], 
+                                iter_fine_tuning=self.cfg['pseb_iter_tuning']
+                            )
+                        elif self.cfg['pseb_clustering'] == 'DIEM':
+                            if '{}' in self.cfg['pseb_diem_path_proto']:
+                                path_to_proto = self.cfg['pseb_diem_path_proto'].format(self.cfg['data_split_fold'])
+                            bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], 
+                                clustering_method='DIEM',
+                                path_proto=path_to_proto, 
+                                num_iter=self.cfg['pseb_diem_num_iter']
+                            )
+                        else:
+                            bag = None
                     elif self.cfg['pseb_dividing'] == 'kmeans':
                         bag = PseudoBag_Kmeans(self.cfg['pseb_n'], self.cfg['pseb_l'])
                     elif self.cfg['pseb_dividing'] == 'random':
@@ -543,8 +557,23 @@ class ClfHandler(object):
                 cur_pseb_ind.append(self.pseb_ind[uid])
         else:
             for i, batch_id in enumerate(idxs):
-                bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], self.cfg['pseb_proto'], 
-                    self.cfg['pseb_pheno_cut'], self.cfg['pseb_iter_tuning'])
+                if self.cfg['pseb_clustering'] == 'ProtoDiv':
+                    bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], 
+                        clustering_method='ProtoDiv',
+                        proto_method=self.cfg['pseb_proto'], 
+                        pheno_cut_method=self.cfg['pseb_pheno_cut'], 
+                        iter_fine_tuning=self.cfg['pseb_iter_tuning']
+                    )
+                elif self.cfg['pseb_clustering'] == 'DIEM':
+                    if '{}' in self.cfg['pseb_diem_path_proto']:
+                        path_to_proto = self.cfg['pseb_diem_path_proto'].format(self.cfg['data_split_fold'])
+                    bag = PseudoBag(self.cfg['pseb_n'], self.cfg['pseb_l'], 
+                        clustering_method='DIEM',
+                        path_proto=path_to_proto,
+                        num_iter=self.cfg['pseb_diem_num_iter']
+                    )
+                else:
+                    bag = None
                 if reload_feat:
                     uid = self.uid[k][batch_id]
                     Xs_new = read_patch_feats_from_uid(uid, self.cfg)
