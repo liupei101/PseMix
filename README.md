@@ -14,6 +14,7 @@
 ---
 
 📚 Recent updates:
+- 24/05/27: 🔥 new SOTA performance with PseMix when using CONCH features
 - 24/05/19: add `data_split` and [Notebook - Generate Data Split](https://github.com/liupei101/PseMix/blob/main/notebooks/generate_data_split_npz.ipynb)
 - 24/05/09: add two PseMix Walkthrough notebooks: [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb) and [Notebook - Pseudo-bag Mixup](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb)
 - 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
@@ -43,6 +44,27 @@ Training curves, showing the AUC performance on training and test data (exported
 <div align="left">
     <a href="https://"><img width="70%" height="auto" src="./docs/psemix-training-curves.png"></a>
 </div>
+
+(3) **often obtain improvements when using the SOTA feature extractor `CONCH`**:
+
+🔥 New SOTA results on TCGA-BRCA, tested with the patch features extracted by [`CONCH`](https://github.com/mahmoodlab/CONCH):
+
+| Network | Prototype | AUC | ACC | F1-Score |
+|---------|-----------|-----|-----|----------|
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) | - | 94.48 | 92.34 | 93.44 |
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) **w/ PseMix** | [PANTHER](https://github.com/mahmoodlab/PANTHER) | **94.77** | **92.33** | **94.07** |
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) **w/ PseMix** | ProDiv  | **94.63** | **92.55** | **94.28** |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) | - | 92.16 | 89.51 | 90.91 |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) **w/ PseMix** | [PANTHER](https://github.com/mahmoodlab/PANTHER) | **93.46** | **91.60** | **93.46** |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) **w/ PseMix** | ProDiv | **93.90** | **91.49** | **93.63** |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) | - | 93.67 | 91.92 | 94.40 |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) **w/ PseMix** | [PANTHER](https://github.com/mahmoodlab/PANTHER) | **94.46** | **91.81** | **94.79** |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) **w/ PseMix** | ProDiv | **94.64** | **90.65** | **93.80** |
+
+There are some fun observations from the table above:
+- Strong feature extractor could boost the performance by a large margin
+- ABMIL is a very strong baseline, outperforming DSMIL and TransMIL when using CONCH features
+- Training with PseMix often leads to SOTA performance 
 
 ## PseMix Walkthrough
 
