@@ -51,13 +51,13 @@ Training curves, showing the AUC performance on training and test data (exported
 
 | Network | Prototype | AUC | ACC | F1-Score |
 |---------|-----------|-----|-----|----------|
-| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) | - | 94.48 | 92.34 | 93.44 |
+| [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) | - | *94.48* | *92.34* | *93.44* |
 | [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) **w/ PseMix** | [PANTHER](https://github.com/mahmoodlab/PANTHER) | **94.77** | **92.33** | **94.07** |
 | [ABMIL](https://proceedings.mlr.press/v80/ilse18a.html) **w/ PseMix** | ProDiv  | **94.63** | **92.55** | **94.28** |
-| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) | - | 92.16 | 89.51 | 90.91 |
+| [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) | - | *92.16* | *89.51* | *90.91* |
 | [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) **w/ PseMix** | [PANTHER](https://github.com/mahmoodlab/PANTHER) | **93.46** | **91.60** | **93.46** |
 | [DSMIL](https://openaccess.thecvf.com/content/CVPR2021/papers/Li_Dual-Stream_Multiple_Instance_Learning_Network_for_Whole_Slide_Image_Classification_CVPR_2021_paper.pdf) **w/ PseMix** | ProDiv | **93.90** | **91.49** | **93.63** |
-| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) | - | 93.67 | 91.92 | 94.40 |
+| [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) | - | *93.67* | *91.92* | *94.40* |
 | [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) **w/ PseMix** | [PANTHER](https://github.com/mahmoodlab/PANTHER) | **94.46** | **91.81** | **94.79** |
 | [TransMIL](https://openreview.net/forum?id=LKUfuWxajHc) **w/ PseMix** | ProDiv | **94.64** | **90.65** | **93.80** |
 
@@ -176,7 +176,7 @@ Here we list the related works involving **pseudo-bags** or using **pseudo-bags 
 | DTFD-MIL (CVPR'22)      | WSI Classification    | [Dtfd-mil: Double-tier feature distillation multiple instance learning for histopathology whole slide image classification](https://arxiv.org/abs/2203.12081) | [Github](https://github.com/hrzhang1123/DTFD-MIL)            | Random pseudo-bag division   |
 | ProDiv (CMPB'24)     | WSI Classification    | [ProDiv: Prototype-driven Consistent Pseudo-bag Division for Whole-slide Image Classification](https://www.sciencedirect.com/science/article/pii/S0169260724001573) | [Github](https://github.com/UESTC-nnLab/ProDiv)            | Prototype-based consistent pseudo-bag division     |
 | PseMix (TMI'24)         | WSI Classification   | [Pseudo-Bag Mixup Augmentation for Multiple Instance Learning-Based Whole Slide Image Classification](https://ieeexplore.ieee.org/abstract/document/10385148) | [Github](https://github.com/liupei101/PseMix)                 | Pseudo-bag Mixup  |
-| ICMIL       | WSI classification    | [Rethinking Multiple Instance Learning for Whole Slide Image Classification: A Bag-Level Classifier is a Good Instance-Level Teacher](https://arxiv.org/abs/2312.01099) | [Github](https://github.com/Dootmaan/ICMIL)           |  Utilizing pseudo-bags in training   |
+| ICMIL (TMI'24)      | WSI classification    | [Rethinking Multiple Instance Learning for Whole Slide Image Classification: A Bag-Level Classifier is a Good Instance-Level Teacher](https://ieeexplore.ieee.org/abstract/document/10538113) | [Github](https://github.com/Dootmaan/ICMIL)           |  Utilizing pseudo-bags in training   |
 | PMIL       | WSI classification     | [Shapley Values-enabled Progressive Pseudo Bag Augmentation for Whole Slide Image Classification](https://arxiv.org/abs/2312.05490) | -         |   Progressive pseudo-bag augmentation  |
 
 **NOTE**: please open *a new PR* if you want to add your work in this resource list.
