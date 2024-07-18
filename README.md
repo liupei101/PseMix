@@ -14,7 +14,7 @@
 ---
 
 📚 Recent updates:
-- 24/05/27: 🔥 new SOTA performance with PseMix when using CONCH features
+- 24/05/27: 🔥 new SOTA performance with PseMix using CONCH features
 - 24/05/19: add `data_split` and [Notebook - Generate Data Split](https://github.com/liupei101/PseMix/blob/main/notebooks/generate_data_split_npz.ipynb)
 - 24/05/09: add two PseMix Walkthrough notebooks: [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb) and [Notebook - Pseudo-bag Mixup](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb)
 - 24/05/08: add link to [a detailed tutorial of WSI preprocessing](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL)
@@ -22,7 +22,7 @@
 - 24/02/22: add useful research papers involving pseudo-bags
 
 
-## Why use PseMix?
+## Why PseMix?
 
 Adopting PseMix in training MIL networks could 
 
@@ -68,13 +68,19 @@ There are some fun observations from the table above:
 
 ## PseMix Walkthrough
 
-PseMix contains two key steps: i) pseudo-bag generation and ii) pseudo-bag mixup. 
+PseMix contains two key steps: i) ***pseudo-bag generation*** and ii) ***pseudo-bag mixup***. Here are two alternative means that could help you quickly understand the two key steps.
 
-There are alternative ways for you to quickly understand the key steps inner PseMix:
-- Two notebooks to help you get started with PseMix: [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb) and [Notebook - Pseudo-bag Mixup](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb).
-- an overall description of the two steps, given below. 
+### Option 1: Notebooks 
 
-### Step 1. Pseudo-bag Generation
+Get started with PseMix: 
+- [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb);
+- [Notebook - Pseudo-bag Mixup](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb).
+
+### Option 2: Overview and pseudo-codes
+
+An overall description of the two key steps is as follows: 
+
+#### Step 1. Pseudo-bag Generation
 
 Pseudo-bag generation contains two sub-steps:
 - Phenotype clustering by 
@@ -84,7 +90,7 @@ Pseudo-bag generation contains two sub-steps:
 
 Its implementation details can be found via the function [`generate_pseudo_bags`](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L146C13-L146C13). This predefined function will be directly used and called in the next step, pseudo-bag mixup. 
 
-### Step 2. Pseudo-bag Mixup
+#### Step 2. Pseudo-bag Mixup
 
 Below is the pseudo-code of pseudo-bag mixup:
 
@@ -129,8 +135,7 @@ for (X, y) in loader: # load a minibatch
     minibatch_training(new_X, new_y)
 ```
 
-**More details** can be found by
-
+**More details** can be found at
 - [pseudo-bag-level Mixup](https://github.com/liupei101/PseMix/blob/main/utils/core.py#L13C10-L13C10).
 - [training with mixed labels](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L381).
 - [weighted loss for mixed samples](https://github.com/liupei101/PseMix/blob/main/model/clf_handler.py#L407), following [the implementation of Mixup](https://github.com/facebookresearch/mixup-cifar10).
