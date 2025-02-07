@@ -14,6 +14,7 @@
 ---
 
 📚 Recent updates:
+- 25/02/07: upload the patch features used in the experiment (36.42G in files); you can access them from [here](https://pan.baidu.com/s/1w7mfyS2LFF_9dhk52MFjpQ?pwd=cdbg).
 - 24/05/27: 🔥 new SOTA performance with PseMix using CONCH features
 - 24/05/19: add `data_split` and [Notebook - Generate Data Split](https://github.com/liupei101/PseMix/blob/main/notebooks/generate_data_split_npz.ipynb)
 - 24/05/09: add two PseMix Walkthrough notebooks: [Notebook - Pseudo-bag Generation](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step1_pseudo_bag_generation.ipynb) and [Notebook - Pseudo-bag Mixup](https://github.com/liupei101/PseMix/blob/main/notebooks/psemix_walkthrough_step2_pseudo_bag_mixup.ipynb)
@@ -142,7 +143,9 @@ for (X, y) in loader: # load a minibatch
 
 ## WSI Preprocessing
 
-The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). Please move to it for a detailed tutorial.
+The procedure of WSI preprocessing is elaborated in [Pipeline-Processing-TCGA-Slides-for-MIL](https://github.com/liupei101/Pipeline-Processing-TCGA-Slides-for-MIL). You can 
+- move to that repo for a detailed tutorial and try it on your own dataset;
+- or download the patch features used in the experiment (36.42G in files) from [here](https://pan.baidu.com/s/1w7mfyS2LFF_9dhk52MFjpQ?pwd=cdbg).
 
 ## 👩‍💻 Running the Code
 
